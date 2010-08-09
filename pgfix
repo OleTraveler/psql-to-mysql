@@ -1,0 +1,64 @@
+#!/bin/sed -f
+
+#Hack so I stop forgetting to add ansi quotes
+s/SET client_encoding = 'UTF8';/SET sql_mode='ANSI_QUOTES';/
+
+#Get rid of SET vars
+/^SET/d
+
+#get rid of keywords that pg escapes (not need if sql_mode: SET sql_mode='ANSI_QUOTES';)
+#s/"language"/language/g
+#s/"password"/password/g
+#s/"location"/location/g
+#s/"owner"/owner/g
+s/"timestamp"/owner/g
+
+
+#change some datatype syntax
+s/::character varying//g
+s/character varying/varchar/g
+s/int_unsigned/integer unsigned/g
+s/bytea/text/g
+s/smallinteger/smallint/g
+s/biginteger/bigint/g
+s/timestamp without time zone/timestamp/g
+s/DEFAULT (-1)/DEFAULT -1/g
+
+#any xid should be autoincremented
+#s/id integer NOT NULL/id integer NOT NULL AUTO_INCREMENT/g
+
+#remove PSQL sequences
+/^CREATE SEQUENCE/d
+s/    START WITH 1//
+s/    INCREMENT BY 1//
+s/    NO MAXVALUE//
+s/    NO MINVALUE//
+s/    CACHE 1;//
+s/\(^ALTER SEQUENCE\)/--\1/
+s/\(^ALTER TABLE.*SET DEFAULT nextval\)/--\1/
+
+#remove sequences and sequence updates
+/SELECT.*setval/d
+/^ALTER SEQUENCE/d
+
+
+#remove 
+/^ALTER TABLE ONLY/d
+/^    ADD CONSTRAINT/d
+
+
+
+#change the insert syntax
+s/CREATE INDEX \([a-z_]*\) ON \([a-z_]*\) USING \([a-z]*\) (\([a-z0-9 ,_]*\))/CREATE INDEX \1 USING \3 ON \2 (\4)/
+
+#get rid of substr indexes
+/USING btree (substr/d
+
+
+#some various index we dont care about
+s/\(^CREATE INDEX eph_migrate_msgs_pages_sourceid_idx\)/--\1/
+s/\(^CREATE INDEX eph_migrate_msgs_story_art_sourceid_idx\)/--\1/
+s/\(^CREATE INDEX eph_migrate_msgs_story_vid_sourceid_idx\)/--\1/
+s/\(^CREATE INDEX eph_node_node_title_type_idx\)/--\1/
+s/\(^CREATE INDEX eph_term_relation_tid2_idx\)/--\1/
+s/\(^CREATE INDEX eph_views_display_vid_idx\)/--\1/
