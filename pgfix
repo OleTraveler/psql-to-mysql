@@ -34,15 +34,15 @@ s/    INCREMENT BY 1//
 s/    NO MAXVALUE//
 s/    NO MINVALUE//
 s/    CACHE 1;//
-s/\(^ALTER SEQUENCE\)/--\1/
-s/\(^ALTER TABLE.*SET DEFAULT nextval\)/--\1/
+s/\(^ALTER SEQUENCE\)/-- \1/
+s/\(^ALTER TABLE.*SET DEFAULT nextval\)/-- \1/
 
 #remove sequences and sequence updates
 /SELECT.*setval/d
 /^ALTER SEQUENCE/d
 
 
-#remove 
+#remove
 /^ALTER TABLE ONLY/d
 /^    ADD CONSTRAINT/d
 
@@ -56,9 +56,9 @@ s/CREATE INDEX \([a-z_]*\) ON \([a-z_]*\) USING \([a-z]*\) (\([a-z0-9 ,_]*\))/CR
 
 
 #some various index we dont care about
-s/\(^CREATE INDEX eph_migrate_msgs_pages_sourceid_idx\)/--\1/
-s/\(^CREATE INDEX eph_migrate_msgs_story_art_sourceid_idx\)/--\1/
-s/\(^CREATE INDEX eph_migrate_msgs_story_vid_sourceid_idx\)/--\1/
-s/\(^CREATE INDEX eph_node_node_title_type_idx\)/--\1/
-s/\(^CREATE INDEX eph_term_relation_tid2_idx\)/--\1/
-s/\(^CREATE INDEX eph_views_display_vid_idx\)/--\1/
+s/\(^CREATE INDEX eph_migrate_msgs_pages_sourceid_idx\)/-- \1/
+s/\(^CREATE INDEX eph_migrate_msgs_story_art_sourceid_idx\)/-- \1/
+s/\(^CREATE INDEX eph_migrate_msgs_story_vid_sourceid_idx\)/-- \1/
+s/\(^CREATE INDEX eph_node_node_title_type_idx\)/-- \1/
+s/\(^CREATE INDEX eph_term_relation_tid2_idx\)/-- \1/
+s/\(^CREATE INDEX eph_views_display_vid_idx\)/-- \1/
