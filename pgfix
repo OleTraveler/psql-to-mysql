@@ -46,7 +46,9 @@ s/\(^ALTER TABLE.*SET DEFAULT nextval\)/-- \1/
 /^ALTER TABLE ONLY/d
 /^    ADD CONSTRAINT/d
 
-
+#replace Postgres' parentheses quoting of negative numbers with MySQL compliant single-quote quoting
+# example: (-9.99) => '-9.99'
+s/DEFAULT (-\([0-9.,]\{1,\}\))/DEFAULT '\1'/
 
 #change the insert syntax
 s/CREATE INDEX \([a-z_]*\) ON \([a-z_]*\) USING \([a-z]*\) (\([a-z0-9 ,_]*\))/CREATE INDEX \1 USING \3 ON \2 (\4)/
