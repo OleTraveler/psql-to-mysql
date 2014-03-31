@@ -54,6 +54,10 @@ s/CREATE INDEX \([a-z_]*\) ON \([a-z_]*\) USING \([a-z]*\) (\([a-z0-9 ,_]*\))/CR
 #get rid of substr indexes
 /USING btree (substr/d
 
+#quote column names with backticks
+s/ \{4\}\([a-z0-9_"]*\)\(.*\),\{0,1\}$/    `\1`\2/
+
+
 
 #some various index we dont care about
 s/\(^CREATE INDEX eph_migrate_msgs_pages_sourceid_idx\)/-- \1/
