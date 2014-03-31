@@ -66,3 +66,6 @@ s/\(^CREATE INDEX eph_migrate_msgs_story_vid_sourceid_idx\)/-- \1/
 s/\(^CREATE INDEX eph_node_node_title_type_idx\)/-- \1/
 s/\(^CREATE INDEX eph_term_relation_tid2_idx\)/-- \1/
 s/\(^CREATE INDEX eph_views_display_vid_idx\)/-- \1/
+
+#Escape keyword 'ignore' with backticks.
+s/, ignore,/, `ignore`,/
